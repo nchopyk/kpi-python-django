@@ -45,31 +45,51 @@ def edit_technique():
     for device in all_devices:
         device.update(False, True)
 
+def show_technique():
+    for device in all_devices:
+        device.update(False, False)
+def add():
+    canv_frame.delete("all")
+    Device("","","","","","","", 200, 100, canv_frame, db, update_canvas, True)
 
-canvas.create_line( 0, 68, 362, 68, 393, 36, 900, 36, fill=accent_color, width=3)
 
-canvas.create_text(20, 35, anchor=W, font=('Helvetica','22','bold'), text="Бригада №27", fill=accent_color)
-btn = HiTech_Chooser("Категорія", 410, 70, ["ціна", "марка", "витрати за рік", "клас ен.еф."], canvas, canvas2)
-btn2 = Custom_Button(["Додати техніку","Вся наявна техніка","Видалення техніки","Редагування"], 10, 120, canvas, [None,None,delete_technique,edit_technique])
+
 
 
 
 # ---------------Task Realizations----------------
 db = DateBase("sqlite.db")
-db.add_technique("Холодильник","1","100х200х30", "еконмний", "2000грн", "3000грн")
-db.add_technique("Холодильник","2","100х200х30", "еконмний", "2000грн", "3000грн")
-db.add_technique("Холодильник","3","100х200х30", "еконмний", "2000грн", "3000грн")
-db.add_technique("Холодильник","4","100х200х30", "еконмний", "2000грн", "3000грн")
-db.add_technique("Холодильник","5","100х200х30", "еконмний", "2000грн", "3000грн")
-db.add_technique("Холодильник","LG","100х200х30", "еконмний", "2000грн", "3000грн")
-db.add_technique("Холодильник","LG","100х200х30", "еконмний", "2000грн", "3000грн")
-db.add_technique("Холодильник","LG","100х200х30", "еконмний", "2000грн", "3000грн")
-db.add_technique("Холодильник","LG","100х200х30", "еконмний", "2000грн", "3000грн")
-db.add_technique("Холодильник","LG","100х200х30", "еконмний", "2000грн", "3000грн")
-db.add_technique("Холодильник","LG","100х200х30", "еконмний", "2000грн", "3000грн")
-db.add_technique("Холодильник","LG","100х200х30", "еконмний", "2000грн", "3000грн")
-db.add_technique("Холодильник","LG","100х200х30", "еконмний", "2000грн", "3000грн")
-db.add_technique("Холодильник","LG","100х200х30", "еконмний", "2000грн", "3000грн")
+
+# db.add_technique("Холодильник","1","100х200х30", "еконмний", "2000грн", "3000грн")
+# db.add_technique("Холодильник","2","100х200х30", "еконмний", "2000грн", "3000грн")
+# db.add_technique("Холодильник","3","100х200х30", "еконмний", "2000грн", "3000грн")
+# db.add_technique("Холодильник","4","100х200х30", "еконмний", "2000грн", "3000грн")
+# db.add_technique("Холодильник","5","100х200х30", "еконмний", "2000грн", "3000грн")
+# db.add_technique("Холодильник","LG","100х200х30", "еконмний", "2000грн", "3000грн")
+# db.add_technique("Холодильник","LG","100х200х30", "еконмний", "2000грн", "3000грн")
+# db.add_technique("Холодильник","LG","100х200х30", "еконмний", "2000грн", "3000грн")
+# db.add_technique("Холодильник","LG","100х200х30", "еконмний", "2000грн", "3000грн")
+# db.add_technique("Холодильник","LG","100х200х30", "еконмний", "2000грн", "3000грн")
+# db.add_technique("Холодильник","LG","100х200х30", "еконмний", "2000грн", "3000грн")
+# db.add_technique("Холодильник","LG","100х200х30", "еконмний", "2000грн", "3000грн")
+# db.add_technique("Холодильник","LG","100х200х30", "еконмний", "2000грн", "3000грн")
+# db.add_technique("Холодильник","LG","100х200х30", "еконмний", "2000грн", "3000грн")
+
+# db.add_technique("Холодильник","1","100х200х30", "еконмний", "2000грн", "3000грн")
+# db.add_technique("Холодильник","2","100х200х30", "еконмний", "2000грн", "3000грн")
+# db.add_technique("Холодильник","3","100х200х30", "еконмний", "2000грн", "3000грн")
+# db.add_technique("Холодильник","4","100х200х30", "еконмний", "2000грн", "3000грн")
+# db.add_technique("Холодильник","5","100х200х30", "еконмний", "2000грн", "3000грн")
+# db.add_technique("Холодильник","LG","100х200х30", "еконмний", "2000грн", "3000грн")
+# db.add_technique("Холодильник","LG","100х200х30", "еконмний", "2000грн", "3000грн")
+# db.add_technique("Холодильник","LG","100х200х30", "еконмний", "2000грн", "3000грн")
+# db.add_technique("Холодильник","LG","100х200х30", "еконмний", "2000грн", "3000грн")
+# db.add_technique("Холодильник","LG","100х200х30", "еконмний", "2000грн", "3000грн")
+# db.add_technique("Холодильник","LG","100х200х30", "еконмний", "2000грн", "3000грн")
+# db.add_technique("Холодильник","LG","100х200х30", "еконмний", "2000грн", "3000грн")
+# db.add_technique("Холодильник","LG","100х200х30", "еконмний", "2000грн", "3000грн")
+# db.add_technique("Холодильник","LG","100х200х30", "еконмний", "2000грн", "3000грн")
+
 
 
 print(0%3)
@@ -78,7 +98,7 @@ print(2%3)
 print(3%3)
 
 all_devices = list()
-def update_canvas():
+def update_canvas(delete, edit):
     all_technique = db.get_all_technique()
     all_devices.clear()
     canv_frame.delete("all")
@@ -86,7 +106,11 @@ def update_canvas():
     show_all_devices(db.get_all_technique())
     print("updated")
     if(all_technique):
-        canv_frame.config(height=(165 + ((all_technique[-1][0] - 1) // 3) * 155))
+        canv_frame.config(height=(165 + ((all_technique.index(all_technique[-1]) - 1) // 3) * 155))
+    if(delete):
+        delete_technique()
+    if (edit):
+        edit_technique()
     canvas_scroll.update_idletasks()
     canvas_scroll.configure(scrollregion=canvas_scroll.bbox('all'), yscrollcommand=scroll_y.set)
 
@@ -97,7 +121,13 @@ def show_all_devices( all_technique):
                                   canv_frame, db, update_canvas))
 
 
-update_canvas()
+canvas.create_line( 0, 68, 362, 68, 393, 36, 900, 36, fill=accent_color, width=3)
+
+canvas.create_text(20, 35, anchor=W, font=('Helvetica','22','bold'), text="Бригада №27", fill=accent_color)
+btn = HiTech_Chooser("Категорія", 410, 70, ["ціна", "марка", "витрати за рік", "клас ен.еф."], canvas, canvas2)
+btn2 = Custom_Button(["Додати техніку","Вся наявна техніка","Видалення техніки","Редагування"], 10, 120, canvas, [add,show_technique,delete_technique,edit_technique], update_canvas)
+
+update_canvas(False, False)
 
 
 root.mainloop()
