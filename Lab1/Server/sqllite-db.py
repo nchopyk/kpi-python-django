@@ -12,7 +12,7 @@ class DateBase:
                                                     size TEXT,
                                                     energy_efficiency_class TEXT,
                                                     electricity_costs_per_year TEXT,
-                                                    price INTEGER NOT NULL) ; """
+                                                    price INTEGER NOT NULL); """
 
         self.cursor.execute(sql_create_consumer_electronics_table)
         self.connection.commit()
