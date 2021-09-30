@@ -29,7 +29,7 @@ class PostgresDb:
         self.connection.commit()
         print("PostgreSQL: electronics table created")
 
-    def export(self, columns, records):
+    def import_records(self, columns, records):
         rows_to_insert = self._remove_unnecessary_columns(columns, records)
         sql_bulk_insert = f"INSERT INTO consumer_electronics ({', '.join(columns)}) VALUES {', '.join(rows_to_insert)} ON CONFLICT (id) {self._on_conflict_do_update(columns)}"
 
@@ -86,5 +86,5 @@ class PostgresDb:
 db = PostgresDb()
 test_records = [(1, 'Wicroowave CHANGED2', 'Test', 'Lardge', 'V6+', '8888', 8888), (3, 'Qicroowave', 'Test', 'Lardge', 'V6+', '8888', 8888),
                 (4, 'Bicroowwwwwwwave', 'Test', 'Lardge', 'V6+', '8888', 8888), (5, 'Microowave', 'Lanos', 'Lardge', 'V6+', '8888', 8888)]
-db.export(['name', 'brand', 'size'], test_records)
+db.import_records(['name', 'brand', 'size'], test_records)  # id already included
 print(db.get_all_records())
