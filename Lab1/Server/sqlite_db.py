@@ -48,23 +48,7 @@ class DateBase:
             print("SQLite: transaction failed, rollback")
             print(self.connection.Error)
 
-    def delete_technique_by_id(self, id):
-        sql_delete_technique = """DELETE FROM technique WHERE id = ?;"""
-
-        self.cursor.execute(sql_delete_technique, (id,))
-        self.connection.commit()
-        print("SQLite: record successfully deleted")
-
-    def get_all_technique(self, sort_by=None, order="ASC"):
-
-        # if sort_by:
-        #     print("Sort")
-        #     sql_get_all_technique = """SELECT * FROM consumer_electronics ORDER BY """ + sort_by + " " + order
-        #     self.cursor.execute(sql_get_all_technique)
-        # else:
-        #     print("No sort")
-        #     sql_get_all_technique = """SELECT * FROM consumer_electronics"""
-        #     self.cursor.execute(sql_get_all_technique)
+    def get_all_technique(self):
         sql_get_all_technique = """ SELECT technique.id, technique.name, technique.brand, specifications.size, 
                                     specifications.energy_efficiency_class, prices.electricity_costs_per_year, prices.price
                                     FROM technique
@@ -74,6 +58,13 @@ class DateBase:
         self.cursor.execute(sql_get_all_technique)
         records = self.cursor.fetchall()
         return records
+
+    def delete_technique_by_id(self, id):
+        sql_delete_technique = """DELETE FROM technique WHERE id = ?;"""
+
+        self.cursor.execute(sql_delete_technique, (id,))
+        self.connection.commit()
+        print("SQLite: record successfully deleted")
 
     def close(self):
         self.connection.close()
