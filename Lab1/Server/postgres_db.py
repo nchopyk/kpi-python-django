@@ -1,4 +1,5 @@
 import psycopg2
+import db_tools
 
 
 class PostgresDb:
@@ -10,35 +11,39 @@ class PostgresDb:
             host="127.0.0.1",
             port="5432",
         )
+        self.cursor = self.connection.cursor()
         print("PostgreSQL: connection successful")
 
-        self.cursor = self.connection.cursor()
-        self.create_electronics_table()
-
-    def create_electronics_table(self):
-        sql_create_consumer_electronics_table = """ CREATE TABLE IF NOT EXISTS consumer_electronics (
-                                                    id integer PRIMARY KEY,
-                                                    name TEXT,
-                                                    brand TEXT,
-                                                    size TEXT,
-                                                    energy_efficiency_class TEXT,
-                                                    electricity_costs_per_year TEXT,
-                                                    price INTEGER); """
-
-        self.cursor.execute(sql_create_consumer_electronics_table)
-        self.connection.commit()
-        print("PostgreSQL: electronics table created")
+        self._create_technique_table()
+        self._create_specifications_table()
+        self._create_prices_table()
 
     def import_records(self, columns, records):
-        rows_to_insert = self._remove_unnecessary_columns(columns, records)
-        sql_bulk_insert = f"INSERT INTO consumer_electronics ({', '.join(columns)}) VALUES {', '.join(rows_to_insert)} ON CONFLICT (id) {self._on_conflict_do_update(columns)}"
+        for row in records:
+            print("PostgreSQL: beginning transaction")
+            try:
+                sql_add_technique = db_tools.generate_technique_insert_row_sql(columns, row)
+                sql_add_specifications_to_technique = db_tools.generate_specifications_insert_row_sql(columns, row)
+                sql_add_prices_to_technique = db_tools.generate_prices_insert_row_sql(columns, row)
 
-        self.cursor.execute(sql_bulk_insert)
-        self.connection.commit()
-        print('PostgreSQL: records successfully exported to Postgres')
+                self.cursor.execute(sql_add_technique)
+                self.cursor.execute(sql_add_specifications_to_technique)
+                self.cursor.execute(sql_add_prices_to_technique)
+
+                self.connection.commit()
+
+                print('PostgreSQL: row was successfully exported to Postgres')
+            except psycopg2.DatabaseError:
+                print("PostgreSQL: transaction failed, rollback")
+
+        print('PostgreSQL: records were successfully exported to Postgres')
 
     def get_all_records(self):
-        sql_get_all_records = """SELECT * FROM consumer_electronics"""
+        sql_get_all_records = """   SELECT technique.id, technique.name, technique.brand, specifications.size,
+                                    specifications.energy_efficiency_class, prices.electricity_costs_per_year, prices.price
+                                    FROM technique
+                                    INNER JOIN specifications ON technique.id = specifications.technique_id 
+                                    INNER JOIN prices ON technique.id = prices.technique_id """
 
         self.cursor.execute(sql_get_all_records)
         records = self._remove_none_from_records(self.cursor.fetchall())
@@ -47,29 +52,33 @@ class PostgresDb:
     def close(self):
         self.connection.close()
 
-    def _remove_unnecessary_columns(self, columns_to_keep, records):
-        all_columns = ('id', 'name', 'brand', 'size', 'energy_efficiency_class', 'electricity_costs_per_year', 'price')
-        rows_to_insert = []
+    def _create_technique_table(self):
+        sql_create_technique_table = """CREATE TABLE IF NOT EXISTS technique (id INTEGER PRIMARY KEY, name TEXT, brand TEXT);"""
+        self.cursor.execute(sql_create_technique_table)
+        self.connection.commit()
+        print("SQLite: technique table created (or already exists)")
 
-        for row in records:
-            row_to_insert = []
-            if "id" not in columns_to_keep: columns_to_keep.insert(0, 'id')
+    def _create_specifications_table(self):
+        sql_create_specifications_table = """CREATE TABLE IF NOT EXISTS specifications (
+                                             id INTEGER PRIMARY KEY,
+                                             size TEXT, 
+                                             energy_efficiency_class TEXT,
+                                             technique_id INTEGER ,
+                                             FOREIGN KEY(technique_id) REFERENCES technique(id) ON DELETE CASCADE);"""
+        self.cursor.execute(sql_create_specifications_table)
+        self.connection.commit()
+        print("SQLite: specifications table created (or already exists)")
 
-            for column in columns_to_keep:
-                row_to_insert.append(row[all_columns.index(column)])
-            rows_to_insert.append(str(tuple(row_to_insert)))
-
-        return rows_to_insert
-
-    def _on_conflict_do_update(self, columns):
-        if "id" in columns:
-            columns.remove("id")
-
-        fields = []
-        for column in columns:
-            fields.append(f"{column}=EXCLUDED.{column}")
-
-        return f"DO UPDATE SET {', '.join(fields)}"
+    def _create_prices_table(self):
+        sql_create_prices_table = """CREATE TABLE IF NOT EXISTS prices (
+                                     id INTEGER PRIMARY KEY,
+                                     price INTEGER,
+                                     electricity_costs_per_year TEXT,
+                                     technique_id INTEGER ,
+                                     FOREIGN KEY(technique_id) REFERENCES technique(id) ON DELETE CASCADE); """
+        self.cursor.execute(sql_create_prices_table)
+        self.connection.commit()
+        print("SQLite: prices table created (or already exists)")
 
     def _remove_none_from_records(self, records):
         records_to_return = []
@@ -81,10 +90,3 @@ class PostgresDb:
             records_to_return.append(tuple(row_to_return))
 
         return records_to_return
-
-
-db = PostgresDb()
-test_records = [(1, 'Wicroowave CHANGED2', 'Test', 'Lardge', 'V6+', '8888', 8888), (3, 'Qicroowave', 'Test', 'Lardge', 'V6+', '8888', 8888),
-                (4, 'Bicroowwwwwwwave', 'Test', 'Lardge', 'V6+', '8888', 8888), (5, 'Microowave', 'Lanos', 'Lardge', 'V6+', '8888', 8888)]
-db.import_records(['name', 'brand', 'size'], test_records)  # id already included
-print(db.get_all_records())
