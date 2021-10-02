@@ -1,4 +1,6 @@
 import sqlite3
+from postgres_db import PostgresDb
+from mysql_db import MysqlDb
 
 
 class DateBase:
@@ -66,6 +68,22 @@ class DateBase:
         self.connection.commit()
         print("SQLite: record successfully deleted")
 
+    def export_to_database2(self):
+        sqlite_db = DateBase('sqlite.db')
+        postgres_db = PostgresDb()
+
+        records = sqlite_db.get_all_technique()
+        postgres_db.import_records(['name', 'brand', 'energy_efficiency_class', 'price'], records)
+        print(postgres_db.get_all_records())
+
+    def export_to_database3(self):
+        sqlite_db = DateBase('sqlite.db')
+        mysql_db = MysqlDb()
+
+        records = sqlite_db.get_all_technique()
+        mysql_db.import_record(['name', 'brand', 'energy_efficiency_class', 'price'], records)
+        print(mysql_db.get_all_records())
+
     def close(self):
         self.connection.close()
 
@@ -96,11 +114,3 @@ class DateBase:
         self.cursor.execute(sql_create_prices_table)
         self.connection.commit()
         print("SQLite: prices table created (or already exists)")
-
-
-db = DateBase('sqlite.db')
-# db.add_technique("TV", "Samsung", "1", "A+1", "1", "1")
-db.add_technique("TV2", "Samsung2", "2", "A+2", "2", "price")
-# db.edit_technique(3, "TV", "LG", "77777777", "7777777", "777777777", "777777")
-for row in db.get_all_technique():
-    print(row)
