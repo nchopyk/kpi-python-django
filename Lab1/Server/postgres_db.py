@@ -1,5 +1,6 @@
 import psycopg2
-import db_tools
+from ..Server import db_tools
+
 
 
 class PostgresDb:
@@ -46,7 +47,7 @@ class PostgresDb:
                                     INNER JOIN prices ON technique.id = prices.technique_id """
 
         self.cursor.execute(sql_get_all_records)
-        records = self._remove_none_from_records(self.cursor.fetchall())
+        records = self.cursor.fetchall()
         return records
 
     def close(self):
@@ -79,14 +80,3 @@ class PostgresDb:
         self.cursor.execute(sql_create_prices_table)
         self.connection.commit()
         print("PostgreSQL: prices table created (or already exists)")
-
-    def _remove_none_from_records(self, records):
-        records_to_return = []
-        for record in records:
-            row_to_return = []
-            for column in record:
-                if column is not None:
-                    row_to_return.append(column)
-            records_to_return.append(tuple(row_to_return))
-
-        return records_to_return
