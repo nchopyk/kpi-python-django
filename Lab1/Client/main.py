@@ -50,6 +50,7 @@ def show_technique():
         device.update(False, False)
 def add():
     canv_frame.delete("all")
+    canv_frame.config(height=475)
     Device("","","","","","","", 200, 100, canv_frame, db, update_canvas, True)
 
 
@@ -92,9 +93,9 @@ db = DateBase("sqlite.db")
 
 
 
-print(0%3)
-print(1%3)
-print(2%3)
+print(0//3)
+print(1//3)
+print(2//3)
 print(3%3)
 
 all_devices = list()
@@ -105,8 +106,10 @@ def update_canvas(delete, edit):
     print(all_technique)
     show_all_devices(db.get_all_technique())
     print("updated")
+
     if(all_technique):
-        canv_frame.config(height=(165 + ((all_technique.index(all_technique[-1]) - 1) // 3) * 155))
+        canv_frame.config(height=(165 + ((all_technique.index(all_technique[-1])) // 3) * 155))
+
     if(delete):
         delete_technique()
     if (edit):
@@ -117,7 +120,7 @@ def update_canvas(delete, edit):
 def show_all_devices( all_technique):
     for technique in all_technique:
         all_devices.append(Device(technique[0], technique[1], technique[2], technique[3], technique[4], technique[5], technique[6],
-                                  10 + ((all_technique.index(technique) - 1) % 3) * 215, 10 + ((all_technique.index(technique) - 1) // 3) * 155,
+                                  10 + ((all_technique.index(technique)) % 3) * 215, 10 + ((all_technique.index(technique)) // 3) * 155,
                                   canv_frame, db, update_canvas))
 
 
