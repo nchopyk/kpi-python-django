@@ -50,7 +50,12 @@ class Custom_Button():
             self.canvas.itemconfig(underline, fill=header_bg)
         self.canvas.itemconfig(widget, fill=accent_color)
         self.canvas.itemconfig(self.underlines[self.buttons.index(widget)], fill=accent_color)
-        self.update_func(False, False)
+        if self.buttons.index(widget) ==4:
+            self.update_func(False, False, d_b2=True)
+        elif self.buttons.index(widget) ==5:
+            self.update_func(False, False, d_b3=True)
+        else:
+            self.update_func(False, False)
         if self.funk[self.buttons.index(widget)] != None:
             self.funk[self.buttons.index(widget)]()
 
@@ -459,7 +464,7 @@ class Db2_Device():
     """Class that displays each technique
     from db2"""
 
-    def __init__(self, name, brand, size, en_ef_class, x, y, canv_frame):
+    def __init__(self, name, brand, en_ef_class, price, x, y, canv_frame):
         """
         :param name: a name of the current technique
         :param brand: a brand of the current technique
@@ -473,7 +478,7 @@ class Db2_Device():
         self.canv_frame = canv_frame
 
         self.name = name
-        self.size = size
+        self.price = price
         self.brand = brand
         self.en_ef_class = en_ef_class
         self.x = x
@@ -486,7 +491,7 @@ class Db2_Device():
                                              font=('Helvetica', '12', 'bold'))
         self.header = canv_frame.create_text(x + 10, y + 60, text="Марка: " + brand, anchor=W, fill=info_font_color,
                                              font=('Helvetica', '8'))
-        self.header = canv_frame.create_text(x + 10, y + 75, text="Розміри: " + size, anchor=W, fill=info_font_color,
+        self.header = canv_frame.create_text(x + 10, y + 75, text="Ціна: " + price, anchor=W, fill=info_font_color,
                                              font=('Helvetica', '8'))
         self.header = canv_frame.create_text(x + 10, y + 90, text="Клас ен. еф.: " + en_ef_class, anchor=W,
                                              fill=info_font_color, font=('Helvetica', '8'))

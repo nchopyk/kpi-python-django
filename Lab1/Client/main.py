@@ -65,19 +65,19 @@ def add():
     Device("", "", "", "", "", "", "", 200, 100, canv_frame, db, update_canvas, True)
 
 
-def update_canvas(delete, edit, db2=False, db3=False):
+def update_canvas(delete, edit, d_b2=False, d_b3=False):
     """A function to update the content on the canvas"""
 
-    if (not db2 and not db3):
+    if (not d_b2 and not d_b3):
         all_technique = db.get_all_technique()
-    elif (db2):
-        all_technique = db2.get_all_technique()
+    elif (d_b2):
+        all_technique = db2.get_all_records()
     else:
-        all_technique = db3.get_all_technique()
+        all_technique = db3.get_all_records()
     all_devices.clear()
     canv_frame.delete("all")
     print(all_technique)
-    show_all_devices(all_technique, db2, db3)
+    show_all_devices(all_technique, d_b2, d_b3)
     print("updated")
     if (all_technique):
         canv_frame.config(height=(165 + ((all_technique.index(all_technique[-1])) // 3) * 155))
@@ -99,9 +99,14 @@ def show_all_devices(all_technique, db2, db3):
                                       canv_frame, db, update_canvas))
     elif (db2):
         for technique in all_technique:
+            all_devices.append(Db2_Device(technique[1], technique[2], technique[4], technique[6],
+                                          10 + ((all_technique.index(technique)) % 3) * 215, 10 + ((all_technique.index(technique)) // 3) * 155,
+                                          canv_frame))
+    else:
+        for technique in all_technique:
             all_devices.append(Db2_Device(technique[1], technique[2], technique[3], technique[4],
                                           10 + ((all_technique.index(technique)) % 3) * 215, 10 + ((all_technique.index(technique)) // 3) * 155,
-                                          canv_frame, db, update_canvas))
+                                          canv_frame))
 
 
 # ---------------Task Realizations----------------
@@ -113,7 +118,7 @@ all_devices = list()
 # -----------Creating User Interface Objects-----------
 canvas.create_line(0, 68, 362, 68, 393, 36, 900, 36, fill=accent_color, width=3)
 canvas.create_text(20, 35, anchor=W, font=('Helvetica', '22', 'bold'), text="Бригада №27", fill=accent_color)
-btn2 = Custom_Button(["Додати техніку", "Вся наявна техніка", "Видалення техніки", "Редагування", "Export to 2", "Export to 3"], 10, 120, canvas,
+btn2 = Custom_Button(["Додати техніку", "Вся наявна техніка", "Видалення техніки", "Редагування", "Експорт до БД2", "Експорт до БД3"], 10, 120, canvas,
                      [add, show_technique, delete_technique, edit_technique, db.export_to_database2, db.export_to_database3], update_canvas)
 
 update_canvas(False, False)
