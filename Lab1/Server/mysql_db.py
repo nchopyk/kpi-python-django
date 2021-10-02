@@ -71,7 +71,7 @@ class MysqlDb:
     def _create_prices_table(self):
         sql_create_prices_table = """CREATE TABLE IF NOT EXISTS prices (
                                      id INTEGER PRIMARY KEY,
-                                     price INTEGER,
+                                     price TEXT,
                                      electricity_costs_per_year TEXT,
                                      technique_id INTEGER ,
                                      FOREIGN KEY(technique_id) REFERENCES technique(id) ON DELETE CASCADE); """
