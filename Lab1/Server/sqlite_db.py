@@ -77,10 +77,9 @@ class DateBase:
         print(postgres_db.get_all_records())
 
     def export_to_database3(self):
-        sqlite_db = DateBase('sqlite.db')
+        postgres_db = PostgresDb()
         mysql_db = MysqlDb()
-
-        records = sqlite_db.get_all_technique()
+        records = postgres_db.get_all_records()
         mysql_db.import_record(['name', 'brand', 'energy_efficiency_class', 'price'], records)
         print(mysql_db.get_all_records())
 
