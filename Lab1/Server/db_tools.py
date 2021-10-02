@@ -67,12 +67,12 @@ def generate_prices_insert_row_sql(columns_to_keep, row, syntax='postgres'):
     prices_row_to_insert.append(row[0])
 
     if syntax == 'postgres':
-        sql = f"INSERT INTO specifications ({', '.join(prices_columns_to_keep)}, technique_id) VALUES {tuple(prices_row_to_insert)} " \
+        sql = f"INSERT INTO prices ({', '.join(prices_columns_to_keep)}, technique_id) VALUES {tuple(prices_row_to_insert)} " \
               f"{on_conflict_do_update(prices_columns_to_keep, syntax='postgres')};"
     elif syntax == "mysql":
-        sql = f"INSERT INTO specifications ({', '.join(prices_columns_to_keep)}, technique_id) VALUES {tuple(prices_row_to_insert)} " \
+        sql = f"INSERT INTO prices ({', '.join(prices_columns_to_keep)}, technique_id) VALUES {tuple(prices_row_to_insert)} " \
               f"{on_conflict_do_update(prices_columns_to_keep, syntax='mysql')};"
     else:
-        sql = f"INSERT INTO specifications ({', '.join(prices_columns_to_keep)}, technique_id) VALUES {tuple(prices_row_to_insert)};"
+        sql = f"INSERT INTO prices ({', '.join(prices_columns_to_keep)}, technique_id) VALUES {tuple(prices_row_to_insert)};"
 
     return sql
