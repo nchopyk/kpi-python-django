@@ -56,7 +56,7 @@ class PostgresDb:
         sql_create_technique_table = """CREATE TABLE IF NOT EXISTS technique (id INTEGER PRIMARY KEY, name TEXT, brand TEXT);"""
         self.cursor.execute(sql_create_technique_table)
         self.connection.commit()
-        print("SQLite: technique table created (or already exists)")
+        print("PostgreSQL: technique table created (or already exists)")
 
     def _create_specifications_table(self):
         sql_create_specifications_table = """CREATE TABLE IF NOT EXISTS specifications (
@@ -67,7 +67,7 @@ class PostgresDb:
                                              FOREIGN KEY(technique_id) REFERENCES technique(id) ON DELETE CASCADE);"""
         self.cursor.execute(sql_create_specifications_table)
         self.connection.commit()
-        print("SQLite: specifications table created (or already exists)")
+        print("PostgreSQL: specifications table created (or already exists)")
 
     def _create_prices_table(self):
         sql_create_prices_table = """CREATE TABLE IF NOT EXISTS prices (
@@ -78,7 +78,7 @@ class PostgresDb:
                                      FOREIGN KEY(technique_id) REFERENCES technique(id) ON DELETE CASCADE); """
         self.cursor.execute(sql_create_prices_table)
         self.connection.commit()
-        print("SQLite: prices table created (or already exists)")
+        print("PostgreSQL: prices table created (or already exists)")
 
     def _remove_none_from_records(self, records):
         records_to_return = []
