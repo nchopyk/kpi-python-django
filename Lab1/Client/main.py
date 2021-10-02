@@ -2,7 +2,9 @@
 import tkinter.ttk as s
 from tkinter import *
 from data import *
-from Lab1.Server.sqllite_db import DateBase
+from Lab1.Server.sqlite_db import DateBase
+from Lab1.Server.postgres_db import PostgresDb
+from Lab1.Server.mysql_db import MysqlDb
 
 # ------window settings--------
 root = Tk()
@@ -12,9 +14,7 @@ root.resizable(width=False, height=False)
 canvas = Canvas(root, height=600, width=890, bg=header_bg, highlightthickness=0)
 canvas.pack()
 canvas1 = Canvas(canvas, height=500, width=654, bg=content_bg, highlightthickness=0)
-canvas2 = Canvas(canvas, height=0, width=0, bg=header_bg, highlightthickness=0)
 window1 = canvas.create_window(220, 345, window=canvas1, anchor=W)
-window2 = canvas.create_window(410, 186, window=canvas2, anchor=W)
 
 # -----Custom scroll-bar settings--------
 style = s.Style()
@@ -24,6 +24,7 @@ style.configure("My.Vertical.TScrollbar", troughcolor=content_bg, background=acc
 canvas_scroll = Canvas(canvas1, height=500, width=654, bg=content_bg, bd=0, highlightthickness=0)
 scroll_y = s.Scrollbar(canvas1, orient="vertical", command=canvas_scroll.yview, style="My.Vertical.TScrollbar")
 
+# Creating widgets to display main content
 frame = Frame(canvas_scroll, bg=content_bg)
 frame.pack(expand=True, fill='both')
 canv_frame =Canvas(frame, bg=content_bg, bd=0, highlightthickness=0, width=654, height=500)
@@ -35,78 +36,48 @@ canvas_scroll.configure(scrollregion=canvas_scroll.bbox('all'), yscrollcommand=s
 canvas_scroll.grid(column=1, row=5)
 scroll_y.grid(column=2, row=5, sticky=NS)
 
-# -----------Creating User Interface Objects-----------
-
 def delete_technique():
+    """A function to switch each device object
+    into delete mode"""
     for device in all_devices:
         device.update(True, False)
 
 def edit_technique():
+    """A function to switch each device object
+    into edit mode"""
     for device in all_devices:
         device.update(False, True)
 
 def show_technique():
+    """A function to display each device object
+    without any mode"""
     for device in all_devices:
         device.update(False, False)
+
 def add():
+    """A function to create device object
+    in add mode"""
     canv_frame.delete("all")
+    canv_frame.config(height=475)
     Device("","","","","","","", 200, 100, canv_frame, db, update_canvas, True)
 
 
+def update_canvas(delete, edit, db2=False, db3=False):
+    """A function to update the content on the canvas"""
 
-
-
-
-# ---------------Task Realizations----------------
-db = DateBase("sqlite.db")
-
-# db.add_technique("Холодильник","1","100х200х30", "еконмний", "2000грн", "3000грн")
-# db.add_technique("Холодильник","2","100х200х30", "еконмний", "2000грн", "3000грн")
-# db.add_technique("Холодильник","3","100х200х30", "еконмний", "2000грн", "3000грн")
-# db.add_technique("Холодильник","4","100х200х30", "еконмний", "2000грн", "3000грн")
-# db.add_technique("Холодильник","5","100х200х30", "еконмний", "2000грн", "3000грн")
-# db.add_technique("Холодильник","LG","100х200х30", "еконмний", "2000грн", "3000грн")
-# db.add_technique("Холодильник","LG","100х200х30", "еконмний", "2000грн", "3000грн")
-# db.add_technique("Холодильник","LG","100х200х30", "еконмний", "2000грн", "3000грн")
-# db.add_technique("Холодильник","LG","100х200х30", "еконмний", "2000грн", "3000грн")
-# db.add_technique("Холодильник","LG","100х200х30", "еконмний", "2000грн", "3000грн")
-# db.add_technique("Холодильник","LG","100х200х30", "еконмний", "2000грн", "3000грн")
-# db.add_technique("Холодильник","LG","100х200х30", "еконмний", "2000грн", "3000грн")
-# db.add_technique("Холодильник","LG","100х200х30", "еконмний", "2000грн", "3000грн")
-# db.add_technique("Холодильник","LG","100х200х30", "еконмний", "2000грн", "3000грн")
-
-# db.add_technique("Холодильник","1","100х200х30", "еконмний", "2000грн", "3000грн")
-# db.add_technique("Холодильник","2","100х200х30", "еконмний", "2000грн", "3000грн")
-# db.add_technique("Холодильник","3","100х200х30", "еконмний", "2000грн", "3000грн")
-# db.add_technique("Холодильник","4","100х200х30", "еконмний", "2000грн", "3000грн")
-# db.add_technique("Холодильник","5","100х200х30", "еконмний", "2000грн", "3000грн")
-# db.add_technique("Холодильник","LG","100х200х30", "еконмний", "2000грн", "3000грн")
-# db.add_technique("Холодильник","LG","100х200х30", "еконмний", "2000грн", "3000грн")
-# db.add_technique("Холодильник","LG","100х200х30", "еконмний", "2000грн", "3000грн")
-# db.add_technique("Холодильник","LG","100х200х30", "еконмний", "2000грн", "3000грн")
-# db.add_technique("Холодильник","LG","100х200х30", "еконмний", "2000грн", "3000грн")
-# db.add_technique("Холодильник","LG","100х200х30", "еконмний", "2000грн", "3000грн")
-# db.add_technique("Холодильник","LG","100х200х30", "еконмний", "2000грн", "3000грн")
-# db.add_technique("Холодильник","LG","100х200х30", "еконмний", "2000грн", "3000грн")
-# db.add_technique("Холодильник","LG","100х200х30", "еконмний", "2000грн", "3000грн")
-
-
-
-print(0%3)
-print(1%3)
-print(2%3)
-print(3%3)
-
-all_devices = list()
-def update_canvas(delete, edit):
-    all_technique = db.get_all_technique()
+    if(not db2 and not db3):
+        all_technique = db.get_all_technique()
+    elif(db2):
+        all_technique = db2.get_all_technique()
+    else:
+        all_technique = db3.get_all_technique()
     all_devices.clear()
     canv_frame.delete("all")
     print(all_technique)
-    show_all_devices(db.get_all_technique())
+    show_all_devices(all_technique, db2, db3)
     print("updated")
     if(all_technique):
-        canv_frame.config(height=(165 + ((all_technique.index(all_technique[-1]) - 1) // 3) * 155))
+        canv_frame.config(height=(165 + ((all_technique.index(all_technique[-1])) // 3) * 155))
     if(delete):
         delete_technique()
     if (edit):
@@ -114,20 +85,32 @@ def update_canvas(delete, edit):
     canvas_scroll.update_idletasks()
     canvas_scroll.configure(scrollregion=canvas_scroll.bbox('all'), yscrollcommand=scroll_y.set)
 
-def show_all_devices( all_technique):
-    for technique in all_technique:
-        all_devices.append(Device(technique[0], technique[1], technique[2], technique[3], technique[4], technique[5], technique[6],
-                                  10 + ((all_technique.index(technique) - 1) % 3) * 215, 10 + ((all_technique.index(technique) - 1) // 3) * 155,
-                                  canv_frame, db, update_canvas))
+def show_all_devices( all_technique, db2, db3):
+    """A function to show each device object
+    """
+    if(not db2 and not db3):
+        for technique in all_technique:
+            all_devices.append(Device(technique[0], technique[1], technique[2], technique[3], technique[4], technique[5], technique[6],
+                                      10 + ((all_technique.index(technique)) % 3) * 215, 10 + ((all_technique.index(technique)) // 3) * 155,
+                                      canv_frame, db, update_canvas))
+    elif(db2):
+        for technique in all_technique:
+            all_devices.append(Db2_Device(technique[1], technique[2], technique[3], technique[4],
+                                      10 + ((all_technique.index(technique)) % 3) * 215, 10 + ((all_technique.index(technique)) // 3) * 155,
+                                      canv_frame, db, update_canvas))
 
 
+# ---------------Task Realizations----------------
+db = DateBase("sqlite.db")
+db2 = PostgresDb()
+db3 = MysqlDb()
+
+all_devices = list()
+# -----------Creating User Interface Objects-----------
 canvas.create_line( 0, 68, 362, 68, 393, 36, 900, 36, fill=accent_color, width=3)
-
 canvas.create_text(20, 35, anchor=W, font=('Helvetica','22','bold'), text="Бригада №27", fill=accent_color)
-btn = HiTech_Chooser("Категорія", 410, 70, ["ціна", "марка", "витрати за рік", "клас ен.еф."], canvas, canvas2)
-btn2 = Custom_Button(["Додати техніку","Вся наявна техніка","Видалення техніки","Редагування"], 10, 120, canvas, [add,show_technique,delete_technique,edit_technique], update_canvas)
+btn2 = Custom_Button(["Додати техніку","Вся наявна техніка","Видалення техніки","Редагування", "Export to 2", "Export to 3"], 10, 120, canvas, [add,show_technique,delete_technique,edit_technique, db.export_to_database2, db.export_to_database3], update_canvas)
 
 update_canvas(False, False)
-
 
 root.mainloop()

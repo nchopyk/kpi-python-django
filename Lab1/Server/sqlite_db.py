@@ -1,6 +1,8 @@
 import sqlite3
-from postgres_db import PostgresDb
-from mysql_db import MysqlDb
+
+from .postgres_db import PostgresDb
+from .mysql_db import MysqlDb
+
 
 
 class DateBase:

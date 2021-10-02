@@ -1,5 +1,6 @@
 import mysql.connector
-import db_tools
+
+from ..Server import db_tools
 
 
 class MysqlDb:

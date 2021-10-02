@@ -1,5 +1,6 @@
 import psycopg2
-import db_tools
+from ..Server import db_tools
+
 
 
 class PostgresDb:
