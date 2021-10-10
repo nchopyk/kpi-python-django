@@ -39,14 +39,10 @@ class PostgresApi():
         psql_db.connect()
         psql_db.create_tables([Technique, Specification, Price])
 
-    def crate_technique(self, name, brand, size, energy_efficiency_class, price, electricity_costs_per_year):
+    def create_technique(self, name, brand, size, energy_efficiency_class, price, electricity_costs_per_year):
         technique = Technique.create(name=name, brand=brand)
-        specifications = Specification.create(size=size, energy_efficiency_class=energy_efficiency_class, technique=technique)
-        price = Price.create(price=price, electricity_costs_per_year=electricity_costs_per_year, technique=technique)
-
-        technique.save()
-        specifications.save()
-        price.save()
+        Specification.create(size=size, energy_efficiency_class=energy_efficiency_class, technique=technique)
+        Price.create(price=price, electricity_costs_per_year=electricity_costs_per_year, technique=technique)
 
     def get_all_records(self):
         query = (Technique
