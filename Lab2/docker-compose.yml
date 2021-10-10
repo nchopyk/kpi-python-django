@@ -12,7 +12,7 @@ services:
       - POSTGRES_PASSWORD=admin
       - POSTGRES_DB=postgres
     ports:
-      - "5432:5432"
+      - "5433:5432"
 
   db:
     image: mysql:8
@@ -22,4 +22,4 @@ services:
       MYSQL_DATABASE: mysql
       MYSQL_ROOT_PASSWORD: admin
     ports:
-      - "3306:3306"
+      - "3307:3306"
