@@ -17,7 +17,6 @@ class Technique(Model):
 
 
 class Specification(Model):
-    size = CharField()
     energy_efficiency_class = CharField()
     technique = ForeignKeyField(Technique, backref='specifications')
 
@@ -27,7 +26,6 @@ class Specification(Model):
 
 class Price(Model):
     price = IntegerField()
-    electricity_costs_per_year = IntegerField()
     technique = ForeignKeyField(Technique, backref='prices')
 
     class Meta:
@@ -36,34 +34,26 @@ class Price(Model):
 
 class PostgresApi():
     def __init__(self):
-        psql_db.connect()
         psql_db.create_tables([Technique, Specification, Price])
 
-    def crate_technique(self, name, brand, size, energy_efficiency_class, price, electricity_costs_per_year):
+    def create_technique(self, name, brand, energy_efficiency_class, price):
         technique = Technique.create(name=name, brand=brand)
-        specifications = Specification.create(size=size, energy_efficiency_class=energy_efficiency_class, technique=technique)
-        price = Price.create(price=price, electricity_costs_per_year=electricity_costs_per_year, technique=technique)
-
-        technique.save()
-        specifications.save()
-        price.save()
+        specifications = Specification.create(energy_efficiency_class=energy_efficiency_class, technique=technique)
+        price = Price.create(price=price, technique=technique)
 
     def get_all_records(self):
         query = (Technique
-                 .select(Technique.name,
+                 .select(Technique.id,
+                         Technique.name,
                          Technique.brand,
-                         Specification.size,
                          Specification.energy_efficiency_class,
-                         Price.price,
-                         Price.electricity_costs_per_year)
+                         Price.price)
                  .join(Price, on=(Technique.id == Price.technique))
                  .join(Specification, on=(Technique.id == Specification.technique)))
         return list(query.dicts())
 
+    def import_records(self, records):
+        for record in records:
+            self.create_technique(record["name"], record["brand"], record["energy_efficiency_class"], record["price"])
 
-db = PostgresApi()
-db.crate_technique("SMarrtPhoen", "Samsung", "12", "A+", 12, 12)
-for row in db.get_all_records():
-    print(row)
 
-print(db.get_all_records())

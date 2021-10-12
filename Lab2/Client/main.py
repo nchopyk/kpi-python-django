@@ -1,9 +1,9 @@
 import tkinter.ttk as s
 from tkinter import *
 from data import *
-from Lab1.Server.sqlite_db import DateBase
-from Lab1.Server.postgres_db import PostgresDb
-from Lab1.Server.mysql_db import MysqlDb
+from Lab2.Server.sqlite_db_api import SQLiteApi
+from Lab2.Server.postgress_db_api import PostgresApi
+from Lab2.Server.mysql_db_api import MySQLApi
 
 # ------window settings--------
 root = Tk()
@@ -69,7 +69,7 @@ def update_canvas(delete, edit, d_b2=False, d_b3=False):
     """A function to update the content on the canvas"""
 
     if (not d_b2 and not d_b3):
-        all_technique = db.get_all_technique()
+        all_technique = db.get_all_records()
     elif (d_b2):
         all_technique = db2.get_all_records()
     else:
@@ -94,25 +94,29 @@ def show_all_devices(all_technique, db2, db3):
     """
     if (not db2 and not db3):
         for technique in all_technique:
-            all_devices.append(Device(technique[0], technique[1], technique[2], technique[3], technique[4], technique[5], technique[6],
+            all_devices.append(Device(technique['id'], technique['name'], technique['brand'], technique['size'], technique['energy_efficiency_class'], technique['electricity_costs_per_year'], technique['price'],
                                       10 + ((all_technique.index(technique)) % 3) * 215, 10 + ((all_technique.index(technique)) // 3) * 155,
                                       canv_frame, db, update_canvas))
     elif (db2):
+        print('-----------------------')
+        print(all_technique)
         for technique in all_technique:
-            all_devices.append(Db2_Device(technique[1], technique[2], technique[4], technique[6],
+            all_devices.append(Db2_Device(technique['name'], technique['brand'], technique['energy_efficiency_class'], technique['price'],
                                           10 + ((all_technique.index(technique)) % 3) * 215, 10 + ((all_technique.index(technique)) // 3) * 155,
                                           canv_frame))
+
+            print("Index for bd2: "+ str(all_technique.index(technique)))
     else:
         for technique in all_technique:
-            all_devices.append(Db2_Device(technique[1], technique[2], technique[3], technique[4],
+            all_devices.append(Db2_Device(technique['name'], technique['brand'], technique['energy_efficiency_class'], technique['price'],
                                           10 + ((all_technique.index(technique)) % 3) * 215, 10 + ((all_technique.index(technique)) // 3) * 155,
                                           canv_frame))
 
 
 # ---------------Task Realizations----------------
-db = DateBase("sqlite.db")
-db2 = PostgresDb()
-db3 = MysqlDb()
+db = SQLiteApi()
+db2 = PostgresApi()
+db3 = MySQLApi()
 
 all_devices = list()
 # -----------Creating User Interface Objects-----------

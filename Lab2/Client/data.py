@@ -108,9 +108,9 @@ class Device():
         self.size = size
         self.brand = brand
         self.price = price
-        self.price_num = price.split('грн')
+        self.price_num = str(price)
         self.en_ef_class = en_ef_class
-        self.electricity_costs_per_year = electricity_costs_per_year
+        self.electricity_costs_per_year = str(electricity_costs_per_year)
         self.db = db
         self.x = x
         self.y = y
@@ -132,9 +132,9 @@ class Device():
                                              font=('Helvetica', '8'))
         self.header = canv_frame.create_text(x + 10, y + 90, text="Клас ен. еф.: " + en_ef_class, anchor=W,
                                              fill=info_font_color, font=('Helvetica', '8'))
-        self.header = canv_frame.create_text(x + 10, y + 105, text="Витрати за рік: " + electricity_costs_per_year, anchor=W,
+        self.header = canv_frame.create_text(x + 10, y + 105, text="Витрати за рік: " + str(electricity_costs_per_year)+"грн", anchor=W,
                                              fill=info_font_color, font=('Helvetica', '8'))
-        self.header = canv_frame.create_text(x + 10, y + 120, text="Ціна: " + price, anchor=W, fill=info_font_color,
+        self.header = canv_frame.create_text(x + 10, y + 120, text="Ціна: " + str(price) + "грн", anchor=W, fill=info_font_color,
                                              font=('Helvetica', '8'))
         self.underline = canv_frame.create_polygon(x + 10, y + 40, x + 170, y + 40, x + 172, y + 42, x + 70, y + 42,
                                                    x + 66, y + 46, x + 16, y + 46, fill=header_font_color)
@@ -213,7 +213,7 @@ class Device():
         self.entry_price = Entry(canv_frame, borderwidth=0, fg="black", bg=accent_color, width=10, font=("", 7),
                                     bd=1,
                                     highlightcolor=header_bg)
-        self.entry_price.insert(END, self.price_num[0])
+        self.entry_price.insert(END, self.price_num)
         self.edit_accept_button = canv_frame.create_polygon(x + 205, y + 145, x + 135, y + 145, x + 135, y + 130,
                                                             x + 140, y + 125, x + 205, y + 125, fill="green", width=2)
         self.edit_accept_text = canv_frame.create_text(x + 140, y + 135, text="Підтвердити", anchor=W, fill="white",
@@ -360,7 +360,7 @@ class Device():
             if (new_size_height.isdigit() and new_size_length.isdigit() and new_size_width.isdigit()):
                 if(new_electricity_costs_per_year.isdigit()):
                     if(new_price.isdigit()):
-                        self.db.edit_technique(self.id, self.name, new_brand, new_size_width+"х"+new_size_length+"х"+new_size_height, new_en_ef_class, new_electricity_costs_per_year+"грн", new_price+"грн")
+                        self.db.edit_technique(self.id, self.name, new_brand, new_size_width+"х"+new_size_length+"х"+new_size_height, new_en_ef_class, int(new_electricity_costs_per_year), int(new_price))
                         self.update_function(False, True)
                     else:
                         self.canv_frame.itemconfig(self.frame, outline="red", width=3)
@@ -388,7 +388,7 @@ class Device():
             if (new_size_height.isdigit() and new_size_length.isdigit() and new_size_width.isdigit()):
                 if(new_electricity_costs_per_year.isdigit()):
                     if(new_price.isdigit()):
-                        self.db.add_technique(new_name, new_brand, new_size_width+"х"+new_size_length+"х"+new_size_height, new_en_ef_class, new_electricity_costs_per_year+"грн", new_price+"грн")
+                        self.db.add_technique(new_name, new_brand, new_size_width+"х"+new_size_length+"х"+new_size_height, new_en_ef_class, int(new_electricity_costs_per_year), int(new_price))
                         self.canv_frame.itemconfig(self.status_text, state="normal",
                                                    text="    Техніку успішно додано    \n Для перевірки перейдіть у \nрозділ \"Вся наявна техніка\"", fill="green")
                         self.canv_frame.itemconfig(self.frame, outline="green", width=3)
@@ -491,7 +491,7 @@ class Db2_Device():
                                              font=('Helvetica', '12', 'bold'))
         self.header = canv_frame.create_text(x + 10, y + 60, text="Марка: " + brand, anchor=W, fill=info_font_color,
                                              font=('Helvetica', '8'))
-        self.header = canv_frame.create_text(x + 10, y + 75, text="Ціна: " + price, anchor=W, fill=info_font_color,
+        self.header = canv_frame.create_text(x + 10, y + 75, text="Ціна: " + str(price)+"грн", anchor=W, fill=info_font_color,
                                              font=('Helvetica', '8'))
         self.header = canv_frame.create_text(x + 10, y + 90, text="Клас ен. еф.: " + en_ef_class, anchor=W,
                                              fill=info_font_color, font=('Helvetica', '8'))
