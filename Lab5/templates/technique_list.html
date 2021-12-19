@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.88.1">
+    <title>Technique shop</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <title>Магазин техніки</title>
+
+    <!-- Bootstrap core CSS -->
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+    </style>
+
+
+</head>
+<body>
+
+{% include './common/header.html' %}
+
+<main>
+
+    <section class="py-4 text-center container">
+        <div class="row py-lg-2">
+            <div class="col-lg-6 col-md-2 mx-auto">
+                <h1 class="fw-light">Доступна техніка</h1>
+            </div>
+        </div>
+    </section>
+
+    <div class="album py-5 bg-light">
+        <div class="container">
+
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-4">
+                {% for technique in techniques %}
+                <div class="col">
+                    <div class="card shadow" >
+                        <div class="d-flex justify-content-center" style="max-height: 300px; min-height: 300px">
+                            {% if not technique.photo_local_url%}
+                            <svg class="bd-placeholder-img card-img-top" width="200px" height="200px"
+                                 xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail"
+                                 preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title>
+                                <rect width="100%" height="100%" fill="#55595c"/>
+                                <text x="50%" y="50%" fill="#eceeef" dy=".3em">Image</text>
+                            </svg>
+                            {% else %}
+                            <image  class="img-fluid p-2" src="{{ technique.photo_local_url }}" style="height: auto"></image>
+                            {% endif %}
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">
+                                <span class="badge bg-secondary">&nbsp;&nbsp;Бренд&nbsp;&nbsp;</span><span
+                                    class="badge bg-light text-dark">{{ technique.brand }}</span><br/>
+                                <span class="badge bg-secondary">Модель</span><span class="badge bg-light text-dark">{{ technique.model }}</span><br/>
+                                <span class="badge bg-secondary">&nbsp;&nbsp;&nbsp;Ціна&nbsp;&nbsp;&nbsp;&nbsp;</span><span
+                                    class="badge bg-light text-dark">{{ technique.price }} UAH</span><br/>
+                            </p>
+                            <div class="d-flex justify-content-end">
+                                <a href="/technique/{{ technique.id }}" type="button"
+                                   class="btn btn-sm btn-outline-secondary">Детальніше</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+</main>
+
+{% include './common/footer.html' %}
+
+</body>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
+</body>
+</html>
